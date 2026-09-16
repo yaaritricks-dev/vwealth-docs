@@ -1,19 +1,19 @@
 # V-Wealth Handoff
 
-Aakhri update: 2026-09-16 15:20 UTC
+Aakhri update: 2026-09-16 17:03 UTC
 
 ## Abhi kahan hain
-Audit ke Batch 1-4 poore, test, deploy, owner-verify aur local commit ho chuke hain; koi push nahi hua.
+Audit ke Batch 1-4 poore, test, deploy, owner-verify, local commit aur private GitHub push ho chuke hain.
 ROADMAP.md authoritative cross-session sach hai. Target architecture Cloudflare Worker + R2 encrypted blob hai; history migrate nahi hogi, current balances se fresh start hoga, Noxyaari VPS par rahega. Android v2 reports/settings/reconcile complete hone se pehle VPS V-Wealth nahi hatega; blob web client nahi banega; tax alag pending hai.
-Din 1 ka plan bana hai, implementation shuru nahi hua. Cloudflare resources/code/deploy me koi change nahi hua.
-GitHub ke empty private `yaaritricks-dev/vwealth` aur public `yaaritricks-dev/vwealth-docs` repositories owner ne bana diye hain. Dono ki alag deploy keys write access ke saath GitHub par install ho chuki hain aur owner ne first non-force pushes approve kar diye hain. Pre-push private-history audit pass hai; is handoff commit ko taiyar karte waqt koi remote ya push nahi hua tha.
+Din 1 Worker backend complete aur production par live hai. Private `vwealth-vault-prod` bucket APAC hint/Standard ke saath live hai; direct bucket public access off, default multipart cleanup aur `vault/versions/` 90-day lifecycle verified hain. `vwealth-vault` Worker exact `vault.noxrelay.in` Custom Domain par deployed hai. Typecheck, 11/11 local Miniflare tests, dry-run aur live health/unsigned-auth smoke pass hain.
+GitHub backup live hai. Poora repo private `yaaritricks-dev/vwealth` ke `main` par push aur fresh-fetch verify ho chuka hai. Independent public `yaaritricks-dev/vwealth-docs` repo ki fetched remote tree me sirf `ROADMAP.md` aur `HANDOFF.md` hain. Dono alag deploy keys use karte hain; koi force push nahi hua.
 
 ## Working tree
-Current HEAD: `2ff5f97 chore: tighten gitignore`; koi push nahi hua. ROADMAP.md, STATUS.md aur HANDOFF.md ke GitHub-backup/handoff updates uncommitted hain.
-Aakhri code commit: `6ef0ab3 Fix Batch 4 security gaps`. Koi push nahi hua.
+Worker implementation, deployment record aur docs owner-approved `feat: deploy encrypted vault worker` commit me ja rahe hain. Commit/push ke baad private `main` aur public two-file docs repo clean/fetch-verified hone chahiye.
+Aakhri code commit: `6ef0ab3 Fix Batch 4 security gaps`; ye private repo ki pushed history me maujood hai.
 
 ## Agla kaam
-Dono keys aur first pushes approved hain. Correct key ko repository-local SSH command se bind karke private `main` push/verify karo; public docs ke liye independent clean repository banao, final secret/privacy scan aur exact `ROADMAP.md` + `HANDOFF.md` allowlist verify karke push/fetch-verify karo. Force push bilkul nahi. Uske baad hi neeche ka Din 1 plan shuru hoga.
+Sabse pehle Cloudflare Dashboard me non-expiring deployment API token revoke karwao; revoke confirmation ke baad root-only local token file delete karo. Uske baad Roadmap Day 2: clickable HTML design prototype, private HTTPS preview aur owner screen-by-screen approval. Kotlin full app approval se pehle start nahi hogi.
 
 ## Din 1 - Worker + R2 ka poora plan
 
@@ -78,9 +78,9 @@ Global API key, R2 S3 keys, master password, Recovery Kit, DEK ya production fin
 7. Success par revision + ETag return; client last acknowledged revision store karega.
 8. Version objects 90 din baad lifecycle se delete honge.
 
-### Implementation se pehle do approvals
-1. Blind Worker ke paas DEK nahi, isliye AEAD tag verify nahi kar sakta. Worker structure, size/checksum aur device signature verify karega; AEAD authentication client decrypt par hogi aur failure par client blob reject karega.
-2. R2 me filesystem rename nahi hota. Atomic equivalent: immutable revision object PUT, phir current pointer conditional CAS. ROADMAP ka “temp file + rename” isi meaning me correct karna hai.
+### Owner-approved implementation decisions
+1. Blind Worker ke paas DEK nahi hoga. Worker structure, size/checksum aur device signature verify karta hai; AEAD authentication client decrypt par hogi aur failure par client blob reject karega.
+2. R2 me filesystem rename nahi hota. Implemented atomic equivalent: immutable revision object PUT, phir `vault/current.blob` conditional CAS.
 
 ### Off-site backup
 - Production R2 bucket primary storage hai; wahi off-site backup nahi.
@@ -93,7 +93,7 @@ Global API key, R2 S3 keys, master password, Recovery Kit, DEK ya production fin
 - Stale revision, read-only role, invalid signature/checksum rejection.
 - Interrupted upload/pointer failure ke baad old vault readable.
 - Historical retrieval, lifecycle, no-store, size limit, storage accounting.
-- Staging smoke test before production domain.
+- Full local Miniflare/security/CAS tests aur Wrangler dry-run; staging skip karke separate owner approval ke baad direct production smoke test.
 
 ### Time estimate
 - Owner setup: 30-60 minutes.
@@ -106,16 +106,15 @@ Global API key, R2 S3 keys, master password, Recovery Kit, DEK ya production fin
 - Total: 10-16 focused hours; realistically 1-2 full days for A1-grade endpoint.
 
 ## Adhoora kuch hai?
-Koi product implementation ya test beech me nahi. Cloudflare setup/code start nahi hua. GitHub SSH authentication/remotes configure hona, private push, public two-file repo initialize/verify/push aur dono remote fetch verifications abhi pending hain. Keys aur first pushes owner-approved hain; force push mana hai.
+Worker backend ka koi kaam beech me nahi. Production deploy, Custom Domain, required enrollment secret aur live smoke complete hain; production bucket me abhi koi vault/device object nahi hai. Pending operational cleanup: owner Cloudflare deployment token revoke kare, phir Codex local token file delete kare. Android client/device enrollment abhi bana nahi hai. Off-site backup aur storage-budget decision bhi pending hain.
 
 ## Owner ke pending kaam
 - Cloudflare Access dashboard ka remaining setup/verification.
 - Cloudflare Access ke liye Android-safe background authentication ka faisla.
 - Storage alert ka logical budget/quota tay karna.
-- Cloudflare paid plan lena aur Worker/R2 manual account setup complete karna.
 - Tax/E8 ka faisla baad me karna.
-- Blind-Worker AEAD aur R2 CAS-pointer clarification approve karna.
 - R2 se alag off-site backup destination choose karna.
+- Non-expiring Cloudflare deployment API token revoke karke Codex ko confirm karna.
 
 ## Session band karne ka niyam
 Codex clear karne se pehle ye chaaron sach hone chahiye:

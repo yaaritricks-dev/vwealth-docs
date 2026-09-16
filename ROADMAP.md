@@ -22,6 +22,14 @@ Seemayein jo tay hain aur V-Wealth ko nahi chubhti:
 - Lagatar chalne wala kaam Worker par nahi chalega. Noxyaari VPS par hi rahega kyunki wo Telegram se 24/7 juda hai.
 - Bhaari calculation Worker par nahi hogi; calculation phone/browser par hogi.
 
+Production target:
+- Private R2 bucket: `vwealth-vault-prod`, Standard storage, APAC location hint
+- Worker hostname: `vault.noxrelay.in`
+- Staging skip hoga. Full local Miniflare/CAS/security tests ke baad owner approval se seedha production deploy hoga.
+- Worker `vwealth-vault` production par deploy ho chuka hai; `vault.noxrelay.in` Custom Domain live hai. Public health minimal hai aur baaki vault routes device signature maangte hain.
+- Worker ko DEK nahi milega. Wo envelope structure, size/checksum aur device signature verify karega; AEAD authentication client decrypt ke waqt hogi.
+- R2 publish sequence: immutable revision object PUT, phir current pointer conditional CAS. R2 rename par kabhi bharosa nahi karna.
+
 ## GitHub source backup aur public docs
 - Poora V-Wealth code aur uski history `yaaritricks-dev/vwealth` private GitHub repository me backup hogi.
 - Sirf `ROADMAP.md` aur `HANDOFF.md` `yaaritricks-dev/vwealth-docs` public repository me jayengi, taaki owner ka AI assistant plan padh sake.
@@ -118,7 +126,7 @@ Do phone ka jhagda:
 Blob safety - ye sab mandatory hai:
 - Har blob ka monotonic revision number
 - Upload pe If-Match / compare-and-swap - stale blob reject ho
-- Atomic write: temp file likho phir rename
+- Atomic publish: immutable revision object pehle PUT karo, phir current pointer ko conditional CAS se publish karo; R2 me rename nahi hota
 - Pichle kuch blob versions immutable rakho
 - Client apna last acknowledged revision yaad rakhe
 - AEAD authentication fail ho to blob reject
@@ -210,6 +218,7 @@ Timeline - ek hafta:
 5. Foreground app detect karke context lena - MANA HAI. Usage Access/Accessibility nahi lenge.
 6. Face unlock - Android me crypto-grade nahi. Fingerprint hi.
 7. Noxyaari ko Worker pe le jaana - NAHI HO SAKTA. Wo Telegram se lagatar juda rehta hai, Worker pe lambe chalne wale kaam nahi hote.
+8. Cloudflare account pe sirf noxrelay.in chhuna hai. yaaritricks.com aur yaaritricks.in ko haath nahi lagana. Ek purana Worker "gift-app-bot-user-staging" bhi chal raha hai - usse bhi door rehna. Token ka scope bhi sirf noxrelay.in zone tak rakhna.
 
 ## Khule sawaal jo abhi tay nahi hue
 - Blob file format version, AEAD algorithm, nonce rules, Argon2 parameters, KDF upgrade path
