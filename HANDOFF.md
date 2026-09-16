@@ -1,19 +1,52 @@
-# V-Wealth Handoff
+# Vault Handoff
 
-Aakhri update: 2026-09-16 17:09 UTC
+Aakhri update: 2026-09-16 (design sign-off / specification lock)
 
 ## Abhi kahan hain
-Audit ke Batch 1-4 poore, test, deploy, owner-verify, local commit aur private GitHub push ho chuke hain.
-ROADMAP.md authoritative cross-session sach hai. Target architecture Cloudflare Worker + R2 encrypted blob hai; history migrate nahi hogi, current balances se fresh start hoga, Noxyaari VPS par rahega. Android v2 reports/settings/reconcile complete hone se pehle VPS V-Wealth nahi hatega; blob web client nahi banega; tax alag pending hai.
-Din 1 Worker backend complete aur production par live hai. Private `vwealth-vault-prod` bucket APAC hint/Standard ke saath live hai; direct bucket public access off, default multipart cleanup aur `vault/versions/` 90-day lifecycle verified hain. `vwealth-vault` Worker exact `vault.noxrelay.in` Custom Domain par deployed hai. Typecheck, 11/11 local Miniflare tests, dry-run aur live health/unsigned-auth smoke pass hain.
-GitHub backup live hai. Poora repo private `yaaritricks-dev/vwealth` ke `main` par push aur fresh-fetch verify ho chuka hai. Independent public `yaaritricks-dev/vwealth-docs` repo ki fetched remote tree me sirf `ROADMAP.md` aur `HANDOFF.md` hain. Dono alag deploy keys use karte hain; koi force push nahi hua.
+Owner ne complete design approve kar diya. Naya native Kotlin/Compose app "Vault" hoga; old web "V-Wealth" naam/tax ke saath abhi untouched. Code/prototype branding is task me rename nahi ki. App icon identity "Shield V": exact canonical SVG ROADMAP.md me, dark ink #0d1409 + lime #a8e05f, shield 42%, V full; app/splash/notification/bubble, readable at 20px.
+Native tax removed: owner says "wo CA ka kaam hai". Replacement only "CA ke liye export": select year, full-year CSV. Old web tax stays; prior E8-native-rewrite instructions superseded.
+Approved preview source prototype/, Worker ab9e9013-34a1-4bf9-97e1-d3f7580af483 at private preview.noxrelay.in. Last checks: build + 24 unit cases, live 380 responsive cases (36 screens/5 widths/2 themes + USDT), 33-screen/99-state regression, capture/Save-hit-test and liability suites pass. No Kotlin or emulator installation yet. Preview/old web deployed behavior is unchanged by this docs task.
+ROADMAP.md is authoritative. Exact bubble/widget specs, SVG, reference links and native feasibility gates are recorded there; short carry-forward below.
 
 ## Working tree
-Private working tree clean aur `origin/main` se fetch-verified hai. Aakhri code commit `1718922 feat: deploy encrypted vault worker` hai. Final STATUS.md/HANDOFF.md deployment record owner-approved docs commit me private repo par push hai.
-Public `vwealth-docs` working tree bhi clean/fetch-verified hai; remote tree me exact `HANDOFF.md` aur `ROADMAP.md` hain. Koi force push nahi hua.
+Owner authorized the complete approved prototype and documentation commit/push to both existing repos with message:
+docs: lock design, rename to Vault, add bubble and widget specs
+Private commit includes prototype source/tests/lockfile and ROADMAP.md, STATUS.md, HANDOFF.md; ignored screenshots/builds/node_modules, real data/backups and credentials never included.
+This is the design-lock commit snapshot; resolve its exact hash from git log -1 --oneline (self-referential hash is not embedded in its own file). Parent before design lock: 5130a72 docs: finalize worker deployment handoff.
+Public docs repo remains an independent history with ONLY ROADMAP.md and HANDOFF.md, no STATUS/code/assets. Each repo uses its existing dedicated deploy key. No force push or repo rename.
+Handoff completion requires both worktrees clean and fetched origin/main matching local HEAD; verify with Git rather than trusting older chat status.
 
 ## Agla kaam
-Sabse pehle Cloudflare Dashboard me non-expiring deployment API token revoke karwao; revoke confirmation ke baad root-only local token file delete karo. Uske baad Roadmap Day 2: clickable HTML design prototype, private HTTPS preview aur owner screen-by-screen approval. Kotlin full app approval se pehle start nahi hogi.
+Vault native foundation / Compose interaction spike, not another full design round. First recheck emulator/KVM viability, Android build SDK/JDK/Gradle targets and permission/security gates; then use the approved screens and shared Quick Add.
+Read-only host check: /dev/kvm absent on 2026-09-16. Do not claim the VPS emulator works until acceleration/boot/screenshot tests pass. Do not install/reboot/change production services without the relevant task authorization.
+Owner requested emulator screenshots to reduce phone-review waiting. Real Samsung overlays/fingerprint/StrongBox/haptics/120Hz still require owner phones.
+Repos, Worker names, bucket, hostnames and old running Rust app remain unchanged. Only noxrelay.in Cloudflare resources are in scope; unrelated domains/Worker forbidden. Production DB/backups untouched.
+
+## Locked native capture specification (read with ROADMAP)
+Bubble reference: https://claude.ai/artifact/UCpKpBfyWPQcBVExuNydhA
+- Persistent Shield V overlay; special permission only draw over other apps.
+- Drag anywhere; nearest-edge snap on release; position remembered.
+- Idle half-tuck + reduced opacity, full on touch.
+- Tap shared Quick Add; long-press last shortcut with keypad ready.
+- Drop on bottom ✕ zone: snooze 1 hour.
+- Back dismisses only sheet; underlying app stays, Vault dashboard does not launch.
+- Auto-hide in full-screen video/game/camera, subject to privacy-safe spike verification. No Usage Access/Accessibility/foreground app inspection.
+- Settings: on/off; S/M/L; idle opacity; edge tuck; instant save default OFF + 3-second Undo; hide-full-screen toggle.
+- Sheet uses app's toggle/amount/shortcuts/category/account/keypad/Save and exact validation. No mode toast; no message covers Save. Existing anti-double-save and frozen crypto INR rules retained.
+
+Widget/tile reference: https://claude.ai/artifact/DFnJ9NJqBtxBYXk1QTbkXt
+- 4x2 default: net worth, 3 owner-selected shortcuts, Add.
+- 2x2 pair: net worth + small chart; today's spend + Add.
+- 4x1: monthly income/spend + Add.
+- No hardcoded shortcuts; widget shortcut goes directly to capture sheet, no main-app launch.
+- QS tile directly opens Quick Add; fingerprint only for full app, not capture. This does not authorize bypassing encrypted-vault/keyguard protections; locked/rebooted capture design is a spike gate.
+Both artifact contents could not be fetched in this documentation pass; URLs/owner text preserved, no claim of visual inspection.
+
+CA export: year + full data CSV only; explicit date boundaries, exact amounts/crypto, CSV formula/escaping tests. Locally generated plaintext export only on owner's explicit action, not a server-readable vault or unencrypted backup pipeline.
+
+## Approved design invariants
+Light default; Settings Light/Dark/System persisted. Fixed raised five-tab nav. Floating Add only Home/Ledger, 160px end spacer; no competing Add on entity/form/primary-action pages. Entity pages share month/lifetime/trend/filter/average/largest/entries layout. Liability has outstanding/paid/EMI/conditional payoff/payment history; current prototype estimate is principal-only, not a production amortization engine.
+Quick Add has fixed visible keypad/Save, compact side-by-side crypto rate/value, exact quantities/frozen INR, no mode toast, inline messages, post-save Undo. Expense terracotta and Income green only in toggle/amount; Save always green. No unapproved screen redesign.
 
 ## Din 1 - Worker + R2 ka poora plan
 
@@ -47,9 +80,9 @@ Global API key, R2 S3 keys, master password, Recovery Kit, DEK ya production fin
 - Directory: `/opt/vwealth/worker/`
 - Files: `package.json`, lockfile, `wrangler.jsonc`, `src/index.ts`, `test/`, `README.md`
 - TypeScript Worker; Wrangler pinned dev dependency; global install nahi.
-- VPS par code/local tests; Wrangler/Miniflare local R2; phir staging aur production deploy.
+- VPS par code/local tests; Wrangler/Miniflare local R2; owner-approved direct production deploy (staging skipped).
 - Worker R2 binding use karega; S3 credentials nahi chahiye.
-- Existing Rust/Axum V-Wealth untouched rahega jab tak Android v2 complete aur owner removal approve nahi karta.
+- Existing Rust/Axum V-Wealth untouched rahega jab tak full Vault v1 complete aur owner removal approve nahi karta.
 
 ### Endpoint design
 - `GET /health`: public minimal service/version health; vault metadata nahi.
@@ -72,8 +105,8 @@ Global API key, R2 S3 keys, master password, Recovery Kit, DEK ya production fin
 1. Device signature, timestamp/request ID aur role verify.
 2. Current pointer + ETag read.
 3. `If-Match`/`If-None-Match` aur revision current+1 validate.
-4. Blob `vault/versions/<revision>-<hash>.blob` immutable key par PUT.
-5. `vault/current.json` pointer ko conditional R2 ETag CAS se publish.
+4. Immutable revision blob PUT (exact shipped key/canonical signature protocol worker/README.md se lo).
+5. `vault/current.blob` current object ko conditional R2 ETag CAS se publish.
 6. CAS fail par `412`; current vault unchanged. Orphan object lifecycle se expire hoga.
 7. Success par revision + ETag return; client last acknowledged revision store karega.
 8. Version objects 90 din baad lifecycle se delete honge.
@@ -95,7 +128,7 @@ Global API key, R2 S3 keys, master password, Recovery Kit, DEK ya production fin
 - Historical retrieval, lifecycle, no-store, size limit, storage accounting.
 - Full local Miniflare/security/CAS tests aur Wrangler dry-run; staging skip karke separate owner approval ke baad direct production smoke test.
 
-### Time estimate
+### Original Day 1 time estimate (completed; native estimate nahi)
 - Owner setup: 30-60 minutes.
 - Scaffold/harness: 1-2 hours.
 - Blob/history/storage routes: 3-4 hours.
@@ -106,15 +139,18 @@ Global API key, R2 S3 keys, master password, Recovery Kit, DEK ya production fin
 - Total: 10-16 focused hours; realistically 1-2 full days for A1-grade endpoint.
 
 ## Adhoora kuch hai?
-Worker backend ka koi kaam beech me nahi. Production deploy, Custom Domain, required enrollment secret aur live smoke complete hain; production bucket me abhi koi vault/device object nahi hai. Pending operational cleanup: owner Cloudflare deployment token revoke kare, phir Codex local token file delete kare. Android client/device enrollment abhi bana nahi hai. Off-site backup aur storage-budget decision bhi pending hain.
+Design complete aur owner-approved; is docs-recording task me native build/emulator install shuru nahi hua. Native encryption, recovery, device security aur OS integrations abhi implementation work hain, working prototype unka production proof nahi. Tax/E8 rewrite native task nahi; sirf CA yearly CSV export. Artifact URLs saved but content fetch nahi hua.
+Native spike gates: full-screen auto-hide only allowed permission se feasible hai ya nahi; OS-controlled overlay/notification behavior; foreground-service manifest needs; exact 20px Shield V; no-fingerprint capture with locked/rebooted E2EE vault; widget privacy/redaction; VPS KVM unavailable. Extra permission, weaker encryption ya new infrastructure silently approve mat maan lena.
+Off-site backup destination, storage budget, crypto format/KDF/recovery and APK signing/update decisions abhi pending. Deployment token owner ke app-working milestone tak retained.
 
 ## Owner ke pending kaam
-- Cloudflare Access dashboard ka remaining setup/verification.
-- Cloudflare Access ke liye Android-safe background authentication ka faisla.
-- Storage alert ka logical budget/quota tay karna.
-- Tax/E8 ka faisla baad me karna.
-- R2 se alag off-site backup destination choose karna.
-- Non-expiring Cloudflare deployment API token revoke karke Codex ko confirm karna.
+- Native spike me surfaced platform/permission/locked-capture decisions, if needed.
+- VPS emulator ke liye virtualization/provider/alternative runner direction if current host cannot support it.
+- Cloudflare Access remaining setup/Android-safe authentication decision.
+- Storage alert budget aur R2 se alag encrypted off-site backup destination.
+- Native phone checks: Samsung overlays, actual fingerprint/StrongBox, haptics, 120Hz, battery/background behavior; full app acceptance baad me.
+- App working hone ke baad retained deployment token revoke karna.
+- Design approval ab pending NAHI hai.
 
 ## Session band karne ka niyam
 Codex clear karne se pehle ye chaaron sach hone chahiye:
