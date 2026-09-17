@@ -75,13 +75,14 @@ Quick Settings tile: tap par direct Quick Add. Owner ka unlock rule: capture ke 
 - Exact paise/crypto quantities aur frozen INR values preserve; stable columns, CSV escaping/formula-safety aur count/date-boundary tests. Extra CA dashboard ya tax engine scope me nahi.
 - Purane V-Wealth web ka tax feature abhi nahi hatana. Approved HTML prototype me old illustrative Tax screen historical design artifact hai; native Vault me CA export replace karega.
 
-### Emulator-first native verification
+### JVM native verification — Robolectric + Roborazzi (approved; emulator decision final)
 
-- Kotlin build ke waqt VPS par Android emulator, ADB screenshots aur automated UI checks; har layout fix ke liye owner phone ka intezaar nahi.
-- 320-430dp layouts, Light/Dark/System, dialogs, keypad, input errors, navigation/back, rotation/insets aur accessibility/font-scale checks emulator par.
-- Owner phones: Samsung-specific overlays across apps, actual fingerprint/StrongBox behavior, haptics, 120Hz/frame pacing aur OEM battery/background behavior. Emulator result ko real-hardware sign-off mat kehna.
-- Read-only check 2026-09-16: VPS par `/dev/kvm` absent. SDK/emulator install ya VM/service changes is documentation task me nahi kiye. Native work ki shuruaat me acceleration/CPU/RAM/disk feasibility verify; provider enablement ya another approved runner chahiye ho to owner se direction lo. Emulator already running/usable claim nahi karna.
-- Linux acceleration ke liye [Android emulator documentation](https://developer.android.com/studio/run/emulator-acceleration) follow karna. Synthetic test vault only; production DB/backups ko emulator me copy nahi karna.
+- Measured host facts: `/dev/kvm` absent aur CPU `vmx`/`svm` flags absent; is VPS par KVM acceleration available nahi. Emulator is host ka viable/approved verification path NAHI hai. Emulator/system image/AVD kabhi install nahi karna; ye pending feasibility/provider question nahi hai. Is section ka final decision document ke older emulator-first references ko supersede karta hai.
+- Approved screenshot method: Compose ko Robolectric `GraphicsMode.NATIVE` + Roborazzi se JVM par PNG render karke verify karna; har layout fix ke liye owner phone ka intezaar nahi. Step 2 harness complete: 18 captures, exact dimensions/pixel assertions, logo 20/24/48/108dp aur empty scaffold widths 320/360/390/412/430dp, light/dark.
+- 320-430dp layouts, Light/Dark/System, dialogs, keypad, input errors, navigation/back, rotation/insets aur accessibility/font-scale ke JVM-testable checks isi harness me add honge. Ye future coverage hai; Step 2 ke 18 foundation captures ko in sab checks ka completed proof mat kehna. JVM screenshot result ko actual OS/device behavior ka substitute mat kehna.
+- Owner phones: Samsung-specific overlays across apps, actual fingerprint/StrongBox behavior, haptics, 120Hz/frame pacing aur OEM battery/background behavior. Ye phone-only gates unchanged hain.
+- Owner Step 2 phone sign-off: signed debug APK install/launch successful, no crash, expected blank screen, Samsung launcher par Shield V adaptive icon masking correct, permissions screen par zero permissions. Actual notification/status-bar 20px tint/readability aur remaining phone-only gates abhi separate verification hain.
+- Synthetic test data only; production DB/backups ko JVM harness ya test device me copy nahi karna. No emulator/AVD, VM/service changes ya release signing authorization is verification method se infer nahi karna.
 
 ### Native spike gates - approved intent, implementation proof pending
 

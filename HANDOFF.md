@@ -1,26 +1,54 @@
 # Vault Handoff
 
-Aakhri update: 2026-09-16 (design sign-off / specification lock)
+Aakhri update: 2026-09-17 (Step 2 owner sign-off; Android foundation complete)
 
 ## Abhi kahan hain
-Owner ne complete design approve kar diya. Naya native Kotlin/Compose app "Vault" hoga; old web "V-Wealth" naam/tax ke saath abhi untouched. Code/prototype branding is task me rename nahi ki. App icon identity "Shield V": exact canonical SVG ROADMAP.md me, dark ink #0d1409 + lime #a8e05f, shield 42%, V full; app/splash/notification/bubble, readable at 20px.
-Native tax removed: owner says "wo CA ka kaam hai". Replacement only "CA ke liye export": select year, full-year CSV. Old web tax stays; prior E8-native-rewrite instructions superseded.
-Approved preview source prototype/, Worker ab9e9013-34a1-4bf9-97e1-d3f7580af483 at private preview.noxrelay.in. Last checks: build + 24 unit cases, live 380 responsive cases (36 screens/5 widths/2 themes + USDT), 33-screen/99-state regression, capture/Save-hit-test and liability suites pass. No Kotlin or emulator installation yet. Preview/old web deployed behavior is unchanged by this docs task.
-ROADMAP.md is authoritative. Exact bubble/widget specs, SVG, reference links and native feasibility gates are recorded there; short carry-forward below.
+Owner ne 2026-09-16 ko complete design lock kiya aur ab Step 2 test karke sign-off de diya. Vault Android foundation complete hai: SDK `/opt/android-sdk`, Kotlin/Compose Gradle project `android/`, application ID `in.noxrelay.vault`, signed debug APK aur Robolectric + Roborazzi JVM screenshot harness with 18 captures. App me abhi intentionally blank themed scaffold hai; koi product screen ya naya design variant nahi.
+
+Owner phone verification complete: signed debug APK install hua, launch hua, crash nahi hua, expected blank screen dikhi; Samsung launcher par Shield V adaptive icon masking sahi dikhi; permissions screen par zero permissions confirm hue. Ye owner-reported physical-phone verification hai, Codex ke direct device inspection ka claim nahi.
+
+Build verification: `assembleDebug` passed; `apksigner verify` passed (v2, one signer); packaged manifest me zero permissions. Native-graphics screenshot suite: 18 passed, zero failures/skips, PNG dimensions aur pixel content checked. Shield V 20/24/48/108dp on light/dark surroundings aur empty scaffolds at 320/360/390/412/430dp widths in both themes. Actual notification/status-bar 20px tint/readability gate abhi separate hai.
+
+Emulator decision FINAL: is host par `/dev/kvm` absent aur CPU `vmx`/`svm` flags absent hain; KVM available nahi. Is host par emulator verification use nahi hogi aur emulator/system image/AVD kabhi install nahi karna. Approved screenshot verification Robolectric + Roborazzi se JVM par hogi. Is decision ko pending feasibility/provider question ki tarah reopen mat karna.
+
+Debug signing: keystore `/root/vault-keys/vault-debug.keystore`, mode 600, repo ke bahar. External `/root/vault-keys/local.properties` bhi mode 600 hai; usme keystore path aur signing credentials hain. Build us file ka path `VAULT_SIGNING_PROPERTIES` environment variable se leta hai; keystore path build script me hardcoded nahi. Gradle execution-history cache bhi repo ke bahar hai. Is handoff me location/commands owner-authorized documentation hain; password, private key aur signing properties file kabhi commit/public copy nahi karni. Release signing key abhi nahi bani; wo alag explicitly approved step hai.
+
+ROADMAP.md authoritative hai. Exact Shield V SVG, approved five-tab design, shared Quick Add, bubble/widget requirements aur security gates unchanged hain. Native tax replacement sirf yearly CA CSV export hai. Existing preview aur deployed old web/Worker behavior untouched hain.
 
 ## Working tree
-Owner authorized the complete approved prototype and documentation commit/push to both existing repos with message:
-docs: lock design, rename to Vault, add bubble and widget specs
-Private commit includes prototype source/tests/lockfile and ROADMAP.md, STATUS.md, HANDOFF.md; ignored screenshots/builds/node_modules, real data/backups and credentials never included.
-This is the design-lock commit snapshot; resolve its exact hash from git log -1 --oneline (self-referential hash is not embedded in its own file). Parent before design lock: 5130a72 docs: finalize worker deployment handoff.
-Public docs repo remains an independent history with ONLY ROADMAP.md and HANDOFF.md, no STATUS/code/assets. Each repo uses its existing dedicated deploy key. No force push or repo rename.
-Handoff completion requires both worktrees clean and fetched origin/main matching local HEAD; verify with Git rather than trusting older chat status.
+Owner ne Step 2 sign-off ke baad following commit aur dono existing repos par non-force push authorize kiya:
+`feat(android): Vault Kotlin foundation, signed debug harness, Roborazzi screenshots`
+
+Private commit scope: Android source, Gradle wrapper/configuration/version catalog, .gitignore, AGENTS.md, STATUS.md, HANDOFF.md aur ROADMAP.md. APK/PNG outputs, local.properties, keystores, build directories, Gradle caches, real data/backups aur credentials excluded hain.
+Public docs repo ki apni separate history me sirf ROADMAP.md aur HANDOFF.md jayengi; private history/code/assets/STATUS kabhi nahi. Existing repo-scoped deploy keys use karo; force push nahi.
+Completion gate: dono worktrees clean, fetched origin/main == local HEAD, public HEAD exactly two allowed files, aur outgoing commit artifact/secret checks pass. Exact commit hashes final Git verification/report se lo; self-referential hash is file me embed nahi hai.
 
 ## Agla kaam
-Vault native foundation / Compose interaction spike, not another full design round. First recheck emulator/KVM viability, Android build SDK/JDK/Gradle targets and permission/security gates; then use the approved screens and shared Quick Add.
-Read-only host check: /dev/kvm absent on 2026-09-16. Do not claim the VPS emulator works until acceleration/boot/screenshot tests pass. Do not install/reboot/change production services without the relevant task authorization.
-Owner requested emulator screenshots to reduce phone-review waiting. Real Samsung overlays/fingerprint/StrongBox/haptics/120Hz still require owner phones.
-Repos, Worker names, bucket, hostnames and old running Rust app remain unchanged. Only noxrelay.in Cloudflare resources are in scope; unrelated domains/Worker forbidden. Production DB/backups untouched.
+Step 3 — approved design system (theme/colors/typography), paanch-tab navigation shell, Home aur shared Quick Add. Existing locked design implement karna hai; naya design round, screen variant, scope change ya estimate change nahi.
+
+Layout/screenshot iteration Robolectric + Roborazzi native graphics se JVM par hogi. Samsung-specific overlays, actual fingerprint/StrongBox, haptics, 120Hz/frame pacing aur OEM battery/background behavior owner phones par verify honge. Step 2 phone checks ko in remaining gates ka sign-off mat samajhna.
+
+Existing repos, Worker/bucket/hostnames, old Rust app, production DB/backups aur unrelated projects unchanged rahenge. Extra permissions, weaker encryption, new infrastructure aur release signing ko implicit approval nahi hai.
+
+### Regenerate commands
+Har Gradle invocation `gradle-safe` se: systemd scope MemoryMax=6G, CPUWeight=50, nice=10; Gradle 3g heap, Kotlin 1536m heap, two workers, parallel=false. SDK selection ignored `android/local.properties` me hi rahe; system-wide SDK environment settings nahi.
+
+```sh
+cd /opt/vwealth/android
+
+# Signed debug APK
+VAULT_SIGNING_PROPERTIES=/root/vault-keys/local.properties ./gradle-safe :app:assembleDebug
+
+# Regenerate all 18 native JVM PNG captures
+VAULT_SIGNING_PROPERTIES=/root/vault-keys/local.properties ./gradle-safe :app:recordRoborazziDebug --rerun-tasks
+
+# Verify APK signature
+/opt/android-sdk/build-tools/37.0.0/apksigner verify --verbose /opt/vwealth/android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+APK output: `/opt/vwealth/android/app/build/outputs/apk/debug/app-debug.apk`.
+Screenshot output directory: `/opt/vwealth/android/app/build/outputs/roborazzi/`.
+Without external signing properties, the debug build stays unsigned; no fallback key is generated. Release signing remains disabled.
 
 ## Locked native capture specification (read with ROADMAP)
 Bubble reference: https://claude.ai/artifact/UCpKpBfyWPQcBVExuNydhA
@@ -139,13 +167,12 @@ Global API key, R2 S3 keys, master password, Recovery Kit, DEK ya production fin
 - Total: 10-16 focused hours; realistically 1-2 full days for A1-grade endpoint.
 
 ## Adhoora kuch hai?
-Design complete aur owner-approved; is docs-recording task me native build/emulator install shuru nahi hua. Native encryption, recovery, device security aur OS integrations abhi implementation work hain, working prototype unka production proof nahi. Tax/E8 rewrite native task nahi; sirf CA yearly CSV export. Artifact URLs saved but content fetch nahi hua.
-Native spike gates: full-screen auto-hide only allowed permission se feasible hai ya nahi; OS-controlled overlay/notification behavior; foreground-service manifest needs; exact 20px Shield V; no-fingerprint capture with locked/rebooted E2EE vault; widget privacy/redaction; VPS KVM unavailable. Extra permission, weaker encryption ya new infrastructure silently approve mat maan lena.
-Off-site backup destination, storage budget, crypto format/KDF/recovery and APK signing/update decisions abhi pending. Deployment token owner ke app-working milestone tak retained.
+Design complete aur owner-approved; Android Step 2 foundation aur limited owner-phone verification signed off. Step 3 design system/nav/Home/Quick Add next hai. Native encryption, recovery, device security aur OS integrations abhi implementation work hain, working prototype unka production proof nahi. Tax/E8 rewrite native task nahi; sirf CA yearly CSV export. Artifact URLs saved but content fetch nahi hua.
+Native spike gates: full-screen auto-hide only allowed permission se feasible hai ya nahi; OS-controlled overlay/notification behavior; foreground-service manifest needs; exact 20px system-notification Shield V; no-fingerprint capture with locked/rebooted E2EE vault; widget privacy/redaction. Emulator decision final hai: JVM screenshots use karo, emulator install nahi. Extra permission, weaker encryption ya new infrastructure silently approve mat maan lena.
+Off-site backup destination, storage budget, crypto format/KDF/recovery and release APK signing/update decisions abhi pending; debug signing complete hai. Deployment token owner ke app-working milestone tak retained.
 
 ## Owner ke pending kaam
 - Native spike me surfaced platform/permission/locked-capture decisions, if needed.
-- VPS emulator ke liye virtualization/provider/alternative runner direction if current host cannot support it.
 - Cloudflare Access remaining setup/Android-safe authentication decision.
 - Storage alert budget aur R2 se alag encrypted off-site backup destination.
 - Native phone checks: Samsung overlays, actual fingerprint/StrongBox, haptics, 120Hz, battery/background behavior; full app acceptance baad me.
