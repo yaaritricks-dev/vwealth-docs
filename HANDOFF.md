@@ -1,13 +1,23 @@
 # Vault Handoff
 
-Aakhri update: 2026-09-17 (Step 2 owner sign-off; Android foundation complete)
+Aakhri update: 2026-09-17 (Step 3 owner phone sign-off; design system, nav shell, Home aur Quick Add complete)
 
 ## Abhi kahan hain
-Owner ne 2026-09-16 ko complete design lock kiya aur ab Step 2 test karke sign-off de diya. Vault Android foundation complete hai: SDK `/opt/android-sdk`, Kotlin/Compose Gradle project `android/`, application ID `in.noxrelay.vault`, signed debug APK aur Robolectric + Roborazzi JVM screenshot harness with 18 captures. App me abhi intentionally blank themed scaffold hai; koi product screen ya naya design variant nahi.
+Owner ne 2026-09-16 ko complete design lock kiya; Step 2 foundation ke baad ab Step 3 bhi phone par test karke sign-off de diya. Step 3 complete: approved design system (theme/colors/typography), paanch-tab navigation shell, Home aur shared Quick Add. Kotlin/Compose project `android/`, application ID `in.noxrelay.vault`; Geist fonts aur Lucide vectors locally bundled hain. Current entries/history synthetic in-memory fixtures hain; local persistence abhi nahi hai. Ledger/Accounts/Reports/More abhi placeholders hain.
 
-Owner phone verification complete: signed debug APK install hua, launch hua, crash nahi hua, expected blank screen dikhi; Samsung launcher par Shield V adaptive icon masking sahi dikhi; permissions screen par zero permissions confirm hue. Ye owner-reported physical-phone verification hai, Codex ke direct device inspection ka claim nahi.
+Owner phone verification (owner-reported physical-phone checks; Codex direct device inspection ka claim nahi):
+- Tall-screen Quick Add spacing sahi; dead gap khatam.
+- Crypto past-date rate enforcement verified: historical date par rate maanga gaya aur Save disabled raha.
+- Home, navigation, history-derived suggestions, toggle colors aur Indian number formatting sahi.
+- Accent-tint tap feedback owner ne accept kiya.
 
-Build verification: `assembleDebug` passed; `apksigner verify` passed (v2, one signer); packaged manifest me zero permissions. Native-graphics screenshot suite: 18 passed, zero failures/skips, PNG dimensions aur pixel content checked. Shield V 20/24/48/108dp on light/dark surroundings aur empty scaffolds at 320/360/390/412/430dp widths in both themes. Actual notification/status-bar 20px tint/readability gate abhi separate hai.
+Accepted follow-up: `VaultPressIndication` original Step 3 brief me nahi tha. Owner ne baad me app-wide tap-feedback change request aur phone par accept kiya: rounded theme-accent tint, maximum 10% opacity, 70ms ease-in / 160ms fade-out; focus/hover 5%. Resting layout aur hit targets unchanged.
+
+Quick Add spacing rule: keypad + Save bottom anchored; flexible space amount ke dono taraf equally split, maximum 128dp per side. 640dp se chhoti height par zero; implementation 640dp par bhi zero rakhta hai. Cap ke baad extra space form/mode toggle ke upar jata hai; optional overflowing fields independently scroll, keypad/Save visible rehte hain.
+
+Latest existing verification evidence: 190/190 JVM tests passed, zero failures/errors/skips; two consecutive verification runs each had 182 unchanged screenshot comparisons, zero added/changed/recorded. Coverage includes both themes, 320-430dp widths, 640dp short screens, tall 412x915/430x950/430x1400 layouts, 130% text, history/crypto/historical-rate states and press feedback. Signed debug APK assemble/signature checks passed (v2, one signer), packaged manifest zero permissions. This sign-off/docs/commit task did not rerun Gradle or change implementation.
+
+Step 2 owner checks remain recorded: signed debug APK install/launch, no crash, expected foundation blank screen, Samsung Shield V adaptive launcher mask and zero permissions. Actual notification/status-bar 20px tint/readability and remaining phone-only gates are separate.
 
 Emulator decision FINAL: is host par `/dev/kvm` absent aur CPU `vmx`/`svm` flags absent hain; KVM available nahi. Is host par emulator verification use nahi hogi aur emulator/system image/AVD kabhi install nahi karna. Approved screenshot verification Robolectric + Roborazzi se JVM par hogi. Is decision ko pending feasibility/provider question ki tarah reopen mat karna.
 
@@ -16,17 +26,17 @@ Debug signing: keystore `/root/vault-keys/vault-debug.keystore`, mode 600, repo 
 ROADMAP.md authoritative hai. Exact Shield V SVG, approved five-tab design, shared Quick Add, bubble/widget requirements aur security gates unchanged hain. Native tax replacement sirf yearly CA CSV export hai. Existing preview aur deployed old web/Worker behavior untouched hain.
 
 ## Working tree
-Owner ne Step 2 sign-off ke baad following commit aur dono existing repos par non-force push authorize kiya:
-`feat(android): Vault Kotlin foundation, signed debug harness, Roborazzi screenshots`
+Owner ne Step 3 phone sign-off ke baad following commit aur dono existing repos par non-force push authorize kiya:
+`feat(android): Vault design system, nav shell, Home and Quick Add`
 
 Private commit scope: Android source, Gradle wrapper/configuration/version catalog, .gitignore, AGENTS.md, STATUS.md, HANDOFF.md aur ROADMAP.md. APK/PNG outputs, local.properties, keystores, build directories, Gradle caches, real data/backups aur credentials excluded hain.
 Public docs repo ki apni separate history me sirf ROADMAP.md aur HANDOFF.md jayengi; private history/code/assets/STATUS kabhi nahi. Existing repo-scoped deploy keys use karo; force push nahi.
 Completion gate: dono worktrees clean, fetched origin/main == local HEAD, public HEAD exactly two allowed files, aur outgoing commit artifact/secret checks pass. Exact commit hashes final Git verification/report se lo; self-referential hash is file me embed nahi hai.
 
 ## Agla kaam
-Step 3 — approved design system (theme/colors/typography), paanch-tab navigation shell, Home aur shared Quick Add. Existing locked design implement karna hai; naya design round, screen variant, scope change ya estimate change nahi.
+Step 4 — local persistence + calendar date picker + Ledger screen. Existing locked design implement karna hai; naya design round, screen variant, scope change ya estimate change nahi.
 
-Layout/screenshot iteration Robolectric + Roborazzi native graphics se JVM par hogi. Samsung-specific overlays, actual fingerprint/StrongBox, haptics, 120Hz/frame pacing aur OEM battery/background behavior owner phones par verify honge. Step 2 phone checks ko in remaining gates ka sign-off mat samajhna.
+Layout/screenshot iteration Robolectric + Roborazzi native graphics se JVM par hogi. Samsung-specific overlays, actual fingerprint/StrongBox, haptics, 120Hz/frame pacing aur OEM battery/background behavior owner phones par verify honge. Step 2/Step 3 phone checks ko in remaining gates ka sign-off mat samajhna.
 
 Existing repos, Worker/bucket/hostnames, old Rust app, production DB/backups aur unrelated projects unchanged rahenge. Extra permissions, weaker encryption, new infrastructure aur release signing ko implicit approval nahi hai.
 
@@ -39,7 +49,7 @@ cd /opt/vwealth/android
 # Signed debug APK
 VAULT_SIGNING_PROPERTIES=/root/vault-keys/local.properties ./gradle-safe :app:assembleDebug
 
-# Regenerate all 18 native JVM PNG captures
+# Regenerate all 182 native JVM PNG captures
 VAULT_SIGNING_PROPERTIES=/root/vault-keys/local.properties ./gradle-safe :app:recordRoborazziDebug --rerun-tasks
 
 # Verify APK signature

@@ -11,7 +11,7 @@ Owner ne complete private prototype ka design approve kar diya hai. Approved bas
 - Naya Android app naam: Vault. Kotlin/Compose app isi naam se banegi.
 - Is task me code, preview branding, repository names, service names, Worker/R2 resources ya hostnames rename nahi karne.
 - Purana running web V-Wealth hi rahega jab tak owner uska removal approve na kare.
-- Design review complete hai; naye unrequested design rounds nahi. Agla engineering step emulator feasibility + Compose interaction spike hai, phir full native build.
+- Design review complete hai; naye unrequested design rounds nahi. Android Step 2 foundation aur Step 3 design system, paanch-tab nav shell, Home aur Quick Add complete aur owner phone-approved hain (2026-09-17). Agla kaam Step 4: local persistence + calendar date picker + Ledger screen; remaining native spike/security gates unchanged hain.
 - Tax calculator Vault me nahi hoga. Owner ka faisla: "wo CA ka kaam hai". Sirf "CA ke liye export": saal chuno, poore saal ka data CSV me. Purane web/preview ka tax code abhi untouched; E8 rewrite native release requirement nahi hai.
 - Existing approved Light-default UI, Dark/System choices, capture safeguards, entity details, liability detail, no-overlap rules aur privacy constraints barkarar hain.
 
@@ -83,6 +83,13 @@ Quick Settings tile: tap par direct Quick Add. Owner ka unlock rule: capture ke 
 - Owner phones: Samsung-specific overlays across apps, actual fingerprint/StrongBox behavior, haptics, 120Hz/frame pacing aur OEM battery/background behavior. Ye phone-only gates unchanged hain.
 - Owner Step 2 phone sign-off: signed debug APK install/launch successful, no crash, expected blank screen, Samsung launcher par Shield V adaptive icon masking correct, permissions screen par zero permissions. Actual notification/status-bar 20px tint/readability aur remaining phone-only gates abhi separate verification hain.
 - Synthetic test data only; production DB/backups ko JVM harness ya test device me copy nahi karna. No emulator/AVD, VM/service changes ya release signing authorization is verification method se infer nahi karna.
+
+### Android implementation progress (2026-09-17)
+
+- Step 3 complete, owner phone sign-off received: design system, five-tab nav shell, Home aur shared Quick Add. Current fixtures synthetic/in-memory hain; persistence aur other tab screens abhi complete nahi hain.
+- Owner verified tall-screen Quick Add spacing/dead-gap fix, past-date crypto rate request with Save disabled, Home/nav/suggestions/toggle colors/Indian formatting, aur accepted accent-tint tap feedback. Acceptance detail aur spacing rule HANDOFF.md me recorded hain.
+- Latest JVM verification: 190 tests passed, 182 unchanged screenshot comparisons. Owner phone checks separate evidence hain; remaining OS/security/phone-only gates unchanged.
+- Next: Step 4 — local persistence + calendar date picker + Ledger screen. Ye progress update hai; approved scope, design aur estimates unchanged hain.
 
 ### Native spike gates - approved intent, implementation proof pending
 
