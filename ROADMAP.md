@@ -54,6 +54,8 @@ Daily reminder + app shortcuts live
 
 Budgets + Reports live
 
+Milestones, Wrapped, budget pace live
+
 Android-era sync infrastructure retired.
 
 ## Next work
