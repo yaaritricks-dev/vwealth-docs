@@ -44,6 +44,8 @@ Local backups encrypted.
 
 Security hardening pass done.
 
+Instant offline start done.
+
 Android-era sync infrastructure retired.
 
 ## Next work
