@@ -50,6 +50,8 @@ Digital Gold v1 live
 
 Recurring entries v1 live
 
+Daily reminder + app shortcuts live
+
 Android-era sync infrastructure retired.
 
 ## Next work

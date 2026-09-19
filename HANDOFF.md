@@ -46,6 +46,8 @@ Digital Gold v1 live
 
 Recurring entries v1 live
 
+Daily reminder + app shortcuts live
+
 Android-era sync infrastructure retired.
 
 Frontend and backend regression suites passed after the work.
