@@ -40,6 +40,8 @@ The owner approved two Quick Add performance rounds on the target phone:
 
 Encrypted off-site daily backup active.
 
+Local backups encrypted.
+
 Android-era sync infrastructure retired.
 
 ## Next work

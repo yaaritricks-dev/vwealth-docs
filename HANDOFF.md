@@ -38,6 +38,7 @@ Owner approved both Quick Add performance rounds on the target phone:
 - Immediate, independent multi-touch keypad press feedback
 - Pixel-identical idle Quick Add appearance in light and dark themes
 - Encrypted off-site daily backup active
+- Local backups encrypted
 
 Android-era sync infrastructure retired.
 
