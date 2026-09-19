@@ -37,6 +37,7 @@ Owner approved both Quick Add performance rounds on the target phone:
 - Smaller initial app payload through lazy loading
 - Immediate, independent multi-touch keypad press feedback
 - Pixel-identical idle Quick Add appearance in light and dark themes
+- Encrypted off-site daily backup active
 
 Frontend and backend regression suites passed after the work.
 

@@ -38,6 +38,8 @@ The owner approved two Quick Add performance rounds on the target phone:
 - Direct per-pointer keypad feedback with independent multi-touch behavior
 - Preserved light and dark visual output
 
+Encrypted off-site daily backup active.
+
 ## Next work
 
 1. Improve operational resilience.
