@@ -42,6 +42,8 @@ Encrypted off-site daily backup active.
 
 Local backups encrypted.
 
+Security hardening pass done.
+
 Android-era sync infrastructure retired.
 
 ## Next work

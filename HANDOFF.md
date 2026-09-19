@@ -39,6 +39,7 @@ Owner approved both Quick Add performance rounds on the target phone:
 - Pixel-identical idle Quick Add appearance in light and dark themes
 - Encrypted off-site daily backup active
 - Local backups encrypted
+- Security hardening pass done
 
 Android-era sync infrastructure retired.
 
