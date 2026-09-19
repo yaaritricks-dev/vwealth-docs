@@ -48,6 +48,8 @@ Recurring entries v1 live
 
 Daily reminder + app shortcuts live
 
+Budgets + Reports live
+
 Android-era sync infrastructure retired.
 
 Frontend and backend regression suites passed after the work.
