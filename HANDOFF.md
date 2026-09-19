@@ -42,6 +42,8 @@ Owner approved both Quick Add performance rounds on the target phone:
 - Security hardening pass done
 - Instant offline start done
 
+Digital Gold v1 live
+
 Android-era sync infrastructure retired.
 
 Frontend and backend regression suites passed after the work.

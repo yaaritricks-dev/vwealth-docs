@@ -46,6 +46,8 @@ Security hardening pass done.
 
 Instant offline start done.
 
+Digital Gold v1 live
+
 Android-era sync infrastructure retired.
 
 ## Next work
