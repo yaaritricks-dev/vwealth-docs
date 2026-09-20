@@ -58,7 +58,7 @@ Milestones, Wrapped, budget pace live
 
 Android-era sync infrastructure retired.
 
-Quick Add crypto retry improvements shipped and passed owner phone testing.
+Crypto entry reliability — shipped.
 
 ## Next work
 

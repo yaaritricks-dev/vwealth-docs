@@ -14,7 +14,7 @@ Android floating bubble / native capture app DROPPED - 19 Sept 2026, owner decis
 
 20 Sep 2026: Hero numbers on Overview and Assets now show final values directly. Quick Add fixes shipped: warning sheets stay open, no automatic keyboard, accurate offline indicator. Vault shows a build ID for phone testing.
 
-Quick Add crypto retry improvements shipped and passed owner phone testing.
+Crypto entry reliability improved across the app. Repeated attempts after a failed save no longer create duplicate entries.
 
 The live app includes:
 
