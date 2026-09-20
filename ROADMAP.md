@@ -58,6 +58,8 @@ Milestones, Wrapped, budget pace live
 
 Android-era sync infrastructure retired.
 
+Quick Add crypto retry improvements shipped and passed owner phone testing.
+
 ## Next work
 
 Next: Quick Add sync reliability, keypad gesture handling, then polish slices S2 to S6.
