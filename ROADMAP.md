@@ -60,6 +60,8 @@ Android-era sync infrastructure retired.
 
 ## Next work
 
+Next: Quick Add sync reliability, keypad gesture handling, then polish slices S2 to S6.
+
 1. Improve operational resilience.
 2. Continue privacy, dependency and reliability hardening.
 3. Make startup and offline return-to-app behavior feel instant.
