@@ -16,6 +16,8 @@ Android floating bubble / native capture app DROPPED - 19 Sept 2026, owner decis
 
 Crypto entry reliability improved across the app. Repeated attempts after a failed save no longer create duplicate entries.
 
+Pending entries sync more reliably when you return to the app.
+
 The live app includes:
 
 - Overview and analytics

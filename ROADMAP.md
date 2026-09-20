@@ -60,6 +60,8 @@ Android-era sync infrastructure retired.
 
 Crypto entry reliability — shipped.
 
+Offline sync reliability — shipped.
+
 ## Next work
 
 Next: Quick Add sync reliability, keypad gesture handling, then polish slices S2 to S6.
