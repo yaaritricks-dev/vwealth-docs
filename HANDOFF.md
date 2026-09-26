@@ -66,6 +66,8 @@ Merchants and payers: picking one in Quick add fills the category or source and 
 
 Recurring payments explain when an automatic payment could not run, and rules that could never run are refused.
 
+Quick add keeps its Confirm button above the navigation on every screen size and font size, and offers merchants, payers, categories and sources in one smart row.
+
 Frontend and backend regression suites passed after the work.
 
 ## Next direction
