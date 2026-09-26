@@ -6,7 +6,7 @@ Last updated: 2026-09-26
 
 V-Wealth is a web product with a thin Android companion. The current Rust and React application remains the active product and will continue to receive focused performance, reliability and feature improvements.
 
-The web app is the active product. A thin Android companion app (26 Sept 2026) opens it full screen and adds a floating quick-add bubble, a home-screen widget, app shortcuts, a quick settings tile and share-to-app. It keeps no data of its own and can be downloaded only while signed in.
+The web app is the active product. A thin Android companion app (26 Sept 2026) opens it full screen and adds a floating quick-add bubble, a home-screen widget, app shortcuts, a quick settings tile and share-to-app. It keeps no data of its own and can be downloaded only while signed in. Tapping the bubble opens a mini Quick add window over any app; the bubble has its own settings, stays away from banking and payment apps, keeps entries made offline until the phone is back online, and holds an add-only link that can never read an amount and can be unlinked from Vault.
 
 ## Current live scope
 
