@@ -4,11 +4,9 @@ Last updated: 2026-09-26
 
 ## Direction
 
-V-Wealth is now a web-only product. The current Rust and React application remains the active product and will continue to receive focused performance, reliability and feature improvements.
+V-Wealth is a web product with a thin Android companion. The current Rust and React application remains the active product and will continue to receive focused performance, reliability and feature improvements.
 
-The web app is the active product. An Android capture companion is planned as a later phase.
-
-Android capture app with a floating bubble: dropped on 19 Sept, revived by the owner on 26 Sept 2026 as a later phase.
+The web app is the active product. A thin Android companion app (26 Sept 2026) opens it full screen and adds a floating quick-add bubble, a home-screen widget, app shortcuts, a quick settings tile and share-to-app. It keeps no data of its own and can be downloaded only while signed in.
 
 ## Current live scope
 
@@ -66,13 +64,15 @@ Recurring payments explain when an automatic payment could not run, and rules th
 
 Quick add keeps its Confirm button above the navigation on every screen size and font size, and offers merchants, payers, categories and sources in one smart row.
 
+26 Sept 2026 (later): shared text opens Quick add pre-filled, an entry can be split in two, the ledger finds entries by amount, merchants and payers show a daily trend, Overview flags a missing daily payout in the evening and recaps the last month early in the month, Reports and Tax stay readable offline, locking warns about unsent entries, and gold sales count as sales rather than income.
+
 Crypto entry reliability — shipped.
 
 Offline sync reliability — shipped.
 
 ## Next work
 
-Next: Quick Add sync reliability, keypad gesture handling, then polish slices S2 to S6.
+Next: the owner's phone test of the Android app, then optional on-device payment-notification prefill and offline crypto entries with price provenance.
 
 1. Improve operational resilience.
 2. Continue privacy, dependency and reliability hardening.

@@ -6,9 +6,7 @@ Last updated: 2026-09-26
 
 V-Wealth is a private, single-user web app with a Rust backend and React frontend. The owner approved a full visual redesign on 26 Sept 2026; money and data behaviour stay exact.
 
-The web app is the active product. An Android capture companion is planned as a later phase.
-
-Android capture app with a floating bubble: dropped on 19 Sept, revived by the owner on 26 Sept 2026 as a later phase.
+The web app is the active product. A thin Android companion app (26 Sept 2026) opens it full screen and adds a floating quick-add bubble, a home-screen widget, app shortcuts, a quick settings tile and share-to-app. It keeps no data of its own and can be downloaded only while signed in.
 
 ## Current product
 
@@ -67,6 +65,8 @@ Merchants and payers: picking one in Quick add fills the category or source and 
 Recurring payments explain when an automatic payment could not run, and rules that could never run are refused.
 
 Quick add keeps its Confirm button above the navigation on every screen size and font size, and offers merchants, payers, categories and sources in one smart row.
+
+26 Sept 2026 (later): shared text opens Quick add pre-filled, an entry can be split in two, the ledger finds entries by amount, merchants and payers show a daily trend, Overview flags a missing daily payout in the evening and recaps the last month early in the month, Reports and Tax stay readable offline, locking warns about unsent entries, and gold sales count as sales rather than income.
 
 Frontend and backend regression suites passed after the work.
 
