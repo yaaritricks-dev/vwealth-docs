@@ -1,14 +1,14 @@
 # V-Wealth handoff
 
-Last updated: 2026-09-19
+Last updated: 2026-09-26
 
 ## Product direction
 
-V-Wealth is a private, single-user web app with a Rust backend and React frontend. The active direction is to keep improving the web product without an unapproved visual redesign.
+V-Wealth is a private, single-user web app with a Rust backend and React frontend. The owner approved a full visual redesign on 26 Sept 2026; money and data behaviour stay exact.
 
-Android is archived and is not an active product, fallback plan or pending delivery.
+The web app is the active product. An Android capture companion is planned as a later phase.
 
-Android floating bubble / native capture app DROPPED - 19 Sept 2026, owner decision, web-only.
+Android capture app with a floating bubble: dropped on 19 Sept, revived by the owner on 26 Sept 2026 as a later phase.
 
 ## Current product
 
@@ -60,6 +60,12 @@ Milestones, Wrapped, budget pace live
 
 Android-era sync infrastructure retired.
 
+26 Sept 2026 redesign live: calmer light and dark themes, glass header and dock, one-hand Quick add, smooth selection and screen motion, own pull-to-refresh, keyboard-safe layouts, and redesigned Overview, Ledger, Assets, Vault, Reports, Tax and AI screens.
+
+Merchants and payers: picking one in Quick add fills the category or source and the usual account, with totals per merchant for the month, six months, a year and all time, a money-flow view of where income came from and where it went, and Ledger search across merchant, category and account names.
+
+Recurring payments explain when an automatic payment could not run, and rules that could never run are refused.
+
 Frontend and backend regression suites passed after the work.
 
 ## Next direction
@@ -71,7 +77,7 @@ Next work should proceed in this order:
 3. Faster startup and a stronger offline experience.
 4. Owner-prioritized product features.
 
-All work should preserve exact money and crypto behavior, the current approved visual language and isolated test practices.
+All work should preserve exact money and crypto behavior, the approved redesign and isolated test practices.
 
 ## Publication rule
 

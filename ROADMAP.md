@@ -1,14 +1,14 @@
 # V-Wealth roadmap
 
-Last updated: 2026-09-19
+Last updated: 2026-09-26
 
 ## Direction
 
 V-Wealth is now a web-only product. The current Rust and React application remains the active product and will continue to receive focused performance, reliability and feature improvements.
 
-Android is archived and has no active milestones, releases or delivery gates.
+The web app is the active product. An Android capture companion is planned as a later phase.
 
-Android floating bubble / native capture app DROPPED - 19 Sept 2026, owner decision, web-only.
+Android capture app with a floating bubble: dropped on 19 Sept, revived by the owner on 26 Sept 2026 as a later phase.
 
 ## Current live scope
 
@@ -58,6 +58,12 @@ Milestones, Wrapped, budget pace live
 
 Android-era sync infrastructure retired.
 
+26 Sept 2026 redesign live: calmer light and dark themes, glass header and dock, one-hand Quick add, smooth selection and screen motion, own pull-to-refresh, keyboard-safe layouts, and redesigned Overview, Ledger, Assets, Vault, Reports, Tax and AI screens.
+
+Merchants and payers: picking one in Quick add fills the category or source and the usual account, with totals per merchant for the month, six months, a year and all time, a money-flow view of where income came from and where it went, and Ledger search across merchant, category and account names.
+
+Recurring payments explain when an automatic payment could not run, and rules that could never run are refused.
+
 Crypto entry reliability — shipped.
 
 Offline sync reliability — shipped.
@@ -70,7 +76,7 @@ Next: Quick Add sync reliability, keypad gesture handling, then polish slices S2
 2. Continue privacy, dependency and reliability hardening.
 3. Make startup and offline return-to-app behavior feel instant.
 4. Add product features in owner-approved priority order.
-5. Preserve the current visual language and strengthen isolated regression coverage with every change.
+5. Keep the new visual language consistent and strengthen isolated regression coverage with every change.
 
 ## Publication rule
 
